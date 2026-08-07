@@ -368,7 +368,7 @@ select.inp{cursor:pointer;}
       <div class="stat s-blue">
         <div class="stat-lbl">Réveillon</div>
         <div class="stat-v c-blue mono" id="ov-rev">R$ 0</div>
-        <div class="stat-s">de R$ 3.000 · 26/dez</div>
+        <div class="stat-s">R$ 350/mês · parcelas set+dez no fluxo</div>
       </div>
     </div>
 
@@ -865,10 +865,10 @@ function renderMetas(){
   });
 
   const revCard = metaCardHTML({
-    id:'rev',emoji:'🎉',name:'Réveillon',prazo:'Meta R$ 3.000 · Parcela 26/dez',
+    id:'rev',emoji:'🎉',name:'Réveillon',prazo:'Parcelas no fluxo + R$ 350/mês guardado',
     guardado:state.rev,meta:META_REV,varCor:'var(--blue)',
-    pacing1Lbl:'Guardar em ago',pacing1Val:'R$ 800',pacing1Cls:'warn',
-    pacing2Lbl:'Guardar em out',pacing2Val:'R$ 800',
+    pacing1Lbl:'Meta mensal (R$ 350/mês)',pacing1Val:'Parcelas: set R$ 600 + dez R$ 800',pacing1Cls:'warn',
+    pacing2Lbl:'Reserva pessoal (ago–dez)',pacing2Val:'R$ 350/mês',
     inputId:'inp-rev',btnLabel:'+ Reserva',btnCls:'btn-blue'
   });
 
@@ -976,16 +976,16 @@ function updateStreakStats(){
 // DEVER DE CASA
 // ============================================================
 const DDC_ITEMS = [
-  {id:'d1',title:'Não usar o cartão hoje',desc:'Um dia limpo = R$ 18 de folga na fatura.',
+  {id:'d1',title:'🚫 Não usar o cartão hoje',desc:'Um dia limpo = R$ 18,4 de folga na fatura. Pequeno hábito, grande impacto.',
    pacing:'Folga atual na fatura',pacingFn:()=>{const f=TETO-totalFatura();return{val:f>0?fmt(f):'ESTOURADO',cls:f>100?'ok':f>0?'warn':'danger'};}},
-  {id:'d2',title:'Registrar gastos do Nubank',desc:'Qualquer gasto que ainda não entrou no painel — adicionar na aba Nubank.',
-   pacing:'Lançamentos registrados',pacingFn:()=>({val:`${state.lanc.length} item${state.lanc.length!==1?'s':''}`,cls:'ok'})},
-  {id:'d3',title:'Guardar R$ 800 para Réveillon',desc:'Separar no cofre do Nubank. Objetivo: fazer em agosto e outubro.',
-   pacing:'Réveillon guardado',pacingFn:()=>({val:fmt(state.rev)+' de R$ 3.000',cls:state.rev>=800?'ok':'warn'})},
-  {id:'d4',title:'Fechar 1 freela da Stormy',desc:'Qualquer job. 100% do valor vai direto para a rinoplastia.',
-   pacing:'Rinoplastia captada',pacingFn:()=>({val:fmt(state.rino)+' de R$ 13.400',cls:state.rino>0?'ok':'danger'})},
-  {id:'d5',title:'Review mensal (26/ago)',desc:'Nos últimos 5 dias: fechar fatura, checar metas, planejar setembro.',
-   pacing:'Próximo review',pacingFn:()=>({val:'26–31/ago',cls:'warn'})},
+  {id:'d2',title:'📝 Registrar gastos pendentes',desc:'Qualquer gasto de ontem que ainda não entrou — adicionar na aba Nubank agora.',
+   pacing:'Lançamentos registrados',pacingFn:()=>({val:`${state.lanc.length} item${state.lanc.length!==1?'s':''}`,cls:state.lanc.length>0?'ok':'warn'})},
+  {id:'d3',title:'💳 Fatura dentro do teto',desc:'Conferir se o total atual está abaixo de R$ 2.000. Se não: parar de usar o cartão.',
+   pacing:'Fatura atual',pacingFn:()=>{const t=totalFatura();const p=(t/TETO*100).toFixed(0);return{val:fmt(t)+' ('+p+'%)',cls:t<1600?'ok':t<1900?'warn':'danger'};}},
+  {id:'d4',title:'📨 Fiz 1 prospecção da Stormy',desc:'Meta: 5 por semana. Cada prospecção hoje é um passo para fechar o freela que paga a rinoplastia.',
+   pacing:'Meta semanal de prospecções',pacingFn:()=>({val:'5 por semana',cls:'warn'})},
+  {id:'d5',title:'📱 Chequei meu dashboard',desc:'Abrir o painel, ver os números, sentir o progresso. Consistência é tudo.',
+   pacing:'Streak atual',pacingFn:()=>{const s=calcStreak();return{val:'🔥 '+s+' dia'+(s!==1?'s':''),cls:s>=3?'ok':s>=1?'warn':'danger'};}},
 ];
 
 function renderDDC(){
